@@ -161,7 +161,7 @@ if name_data == names_data[0]:
 
         # plot
         img_name = os.path.basename(filenames_input[idx_data])[:-4]
-        fig.suptitle(img_name)
+        # fig.suptitle(img_name)
         ax1.set_title("Original Image")
         ax1.imshow(img)
         plot_label(labels, categories, ax1)

@@ -14,4 +14,3 @@ python src/visualize_raw <path/to/raw/data/>
 * `-h` to explore other optional flags
 
 ![raw](media_readme/raw.svg)
-
