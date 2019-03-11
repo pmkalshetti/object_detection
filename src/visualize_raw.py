@@ -9,7 +9,7 @@ import cv2 as cv
 import xml.etree.ElementTree as ET
 import tensorflow as tf
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+from utils.process import process_data
 from utils.plot import plot_label
 
 # ----- script settings ----- #
@@ -91,22 +91,29 @@ if name_data == names_data[0]:
                   'sheep', 'sofa', 'train']
 
     # grid shape
-    height_grid, width_grid = 13, 13
+    height_grid, width_grid = 32, 32  # in pixels
 
-    # anchors (in [0,1] space)
+    # number of grids along either axis
+    num_grids = 13
+
+    # processed image shape
+    height_img_processed = height_grid * num_grids
+    width_img_processed = width_grid * num_grids
+
+    # anchors (in [0,1] space) [width, height]
     anchors_normalized = np.array(
         [
-            [0.09112895, 0.06958421],
-            [0.21102316, 0.16803947],
-            [0.42625895, 0.26609842],
-            [0.25476474, 0.49848],
-            [0.52668947, 0.59138947]
+            [0.06958421, 0.09112895],
+            [0.16803947, 0.21102316],
+            [0.26609842, 0.42625895],
+            [0.49848, 0.25476474],
+            [0.59138947, 0.52668947]
         ],
         dtype=np.float32)
 
-    # map from [0,1] to [0, 19] (grid) space
+    # map from [0,1] to [0, 32] (grid) space
     anchors_grid = anchors_normalized * \
-        np.array([height_grid, width_grid], dtype=np.float32)
+        np.array([width_grid, height_grid], dtype=np.float32)
 
     # read data
     dir_input = args.dir_data + "/JPEGImages"
@@ -153,7 +160,12 @@ if name_data == names_data[0]:
 
         # process
         if args.process:
-            raise NotImplementedError
+            img_processed, labels_processed = process_data(
+                img,
+                labels,
+                width_img_processed,
+                height_img_processed
+            )
 
             ax2.set_title("Processed image")
             ax2.imshow(img_processed)
